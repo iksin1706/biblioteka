@@ -15,11 +15,20 @@ include('../shared/navbar.php');
 
 <div class="container ">
     <h2 class='title mx-1'> Wypożyczenia </h2>
+<<<<<<< HEAD
 
     <button type="button" class="btn btn-right btn-dark m-1 mb-1 mx-1" onclick="window.location.href='create.wypozyczenia.php'">Wypożycz książke</button><br>
     <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='wypozyczenia.php'">Wszystkie wypożyczenia</button>
     <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
     <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='opoznione-wypozyczenia.php'">Opoznione wypożyczenia</button>
+=======
+   
+    <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='create.wypozyczenia.php'">Dodaj wypożyczenie</button>
+    <button type="button" class="btn btn-right btn-dark mx-1" onclick="window.location.href='oddajksiazki.php'">Oddaj książkę</button>
+    <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='dostepneksiazki.php'">Dostępne książki</button>
+    
+
+>>>>>>> d2a51a6e526a120910a182115a081f12c3ad05fa
 
     <table class="table table-striped table-hover mt-sm-1 ">
         <thead class='bg-dark text-light rounded-1'>
