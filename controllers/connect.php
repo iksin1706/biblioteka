@@ -13,19 +13,23 @@ $conn = new PDO($dsn, $username, $password);
 
 
 function getConnection() {
-    $host = 'localhost'; 
-    $dbname = 'biblioteka'; 
-    $username = 'root'; 
-    $password = ''; 
+    $host = 'localhost';
+    $port = '1521';
+    $sid = 'xe'; // Zastąp 'SID' właściwym identyfikatorem systemu Oracle
 
-    try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        return $conn;
-    } catch (PDOException $e) {
-        echo "Błąd połączenia z bazą danych: " . $e->getMessage();
+    $username = 'C##HR'; // Zastąp 'username' właściwą nazwą użytkownika
+    $password = 'root'; // Zastąp 'password' właściwym hasłem
+
+    $conn = oci_connect($username, $password, "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=$host)(PORT=$port))(CONNECT_DATA=(SID=$sid)))");
+
+    if (!$conn) {
+        $e = oci_error();
+        echo "Błąd połączenia z bazą danych: " . $e['message'];
         return null;
     }
+    return $conn;
 }
+
 
 
 ?>

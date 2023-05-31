@@ -38,7 +38,7 @@ include('../shared/navbar.php');
     use controllers\BibliotekarzController;
 
     $bibliotekarzController = new BibliotekarzController();
-    $bibliotekarz = 'bibliotekarz';
+    $bibliotekarz = 'bibliotekarze';
     $bibliotekarzController->show($bibliotekarz);
 
 ?>

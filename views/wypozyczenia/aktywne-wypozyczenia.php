@@ -17,8 +17,8 @@ include('../shared/navbar.php');
     <h2 class='title mx-1'> Wypożyczenia </h2>
 
     <button type="button" class="btn btn-right btn-dark m-1 mb-1 mx-1" onclick="window.location.href='create.wypozyczenia.php'">Wypożycz książke</button><br>
-    <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='wypozyczenia.php'">Wszystkie wypożyczenia</button>
-    <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
+    <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='wypozyczenia.php'">Wszystkie wypożyczenia</button>
+    <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
     <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='opoznione-wypozyczenia.php'">Opoznione wypożyczenia</button>
 
     <table class="table table-striped table-hover mt-sm-1 ">
@@ -42,7 +42,7 @@ include('../shared/navbar.php');
     use controllers\WypozyczeniaController;
 
     $wypozyczeniaController = new WypozyczeniaController();
-    $wypozyczenia = 'wypozyczenia';
+    $wypozyczenia = 'aktywne_wypozyczenia';
     $wypozyczeniaController->show($wypozyczenia);
 
 ?>

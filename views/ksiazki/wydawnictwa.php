@@ -38,7 +38,7 @@ include('../shared/navbar.php');
     use controllers\KsiazkiController;
 
     $ksiazkiController = new KsiazkiController();
-    $wydawnictwo = 'wydawnictwo';
+    $wydawnictwo = 'wydawnictwa';
     $ksiazkiController->show($wydawnictwo);
 
 ?>

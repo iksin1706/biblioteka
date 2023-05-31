@@ -38,7 +38,7 @@ include('../shared/navbar.php');
     use controllers\KsiazkiController;
 
     $ksiazkiController = new KsiazkiController();
-    $option = 'gatunek';
+    $option = 'gatunki';
     $ksiazkiController->show($option);
 
 ?>

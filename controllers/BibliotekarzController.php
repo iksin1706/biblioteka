@@ -8,7 +8,7 @@ use \PDOException;
 
 class Bibliotekarz
 {
-    public $bibliotekarz_fillable = ['id_bibliotekarz','imię','nazwisko','pesel','nr_telefonu'];
+    public $bibliotekarz_fillable = ['id_bibliotekarz','imie','nazwisko','pesel','nr_telefonu'];
 }
 
 class BibliotekarzController
@@ -19,60 +19,70 @@ class BibliotekarzController
         $conn = getConnection();
 
         if ($conn) {
-            $sql = "SELECT * FROM ".$option;
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $resultSet = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+            $sql = "SELECT * FROM " . $option;
+            $stmt = oci_parse($conn, $sql);
+            oci_execute($stmt);
+        
+            $resultSet = array();
+            while ($row = oci_fetch_assoc($stmt)) {
+                $resultSet[] = $row;
+            }
+        
             if (count($resultSet) === 0) {
                 echo "Brak danych do wyświetlenia.";
             } else {
-                
-                if ($option == 'bibliotekarz')
-                {
+                if ($option == 'bibliotekarze') {
                     $bibliotekarz = new Bibliotekarz();
-               foreach ($resultSet as $row) {
-                    echo "<tr>";
-                    foreach($bibliotekarz->bibliotekarz_fillable as $column)
-                    {
-                        echo "<td>" . $row[$column] . "</td>";
+                    foreach ($resultSet as $row) {
+                        echo "<tr>";
+                        foreach ($bibliotekarz->bibliotekarz_fillable as $column) {
+                            echo "<td>" . $row[strtoupper($column)] . "</td>";
+                        }
+                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
+                        echo "</tr>";
                     }
-                    echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
-                    echo "</tr>";
                 }
-                }
-
             }
-
-            $conn = null; 
-    }
+        
+            oci_free_statement($stmt);
+            oci_close($conn);
+        }
+        
 }
 
     public function create_select($option,$option1, $option2)
     {
-        try {
-            $conn = getConnection();
-            if ($conn) {
+        $conn = getConnection();
+
+        if ($conn) {
+            try {
                 if ($option2 === 'autor') {
-                    $sql = "INSERT INTO autor(imię, nazwisko) VALUES (?, ?)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([$option, $option1]);
+                    $sql = "INSERT INTO autor(imię, nazwisko) VALUES (:imie, :nazwisko)";
+                    $stmt = oci_parse($conn, $sql);
+                    oci_bind_by_name($stmt, ':imie', $option);
+                    oci_bind_by_name($stmt, ':nazwisko', $option1);
                 } else {
-                    $sql = "INSERT INTO $option2($option2) VALUES (?)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([$option]);
+                    $sql = "INSERT INTO $option2($option2) VALUES (:optionValue)";
+                    $stmt = oci_parse($conn, $sql);
+                    oci_bind_by_name($stmt, ':optionValue', $option);
                 }
+        
+                oci_execute($stmt);
+                
+                oci_free_statement($stmt);
+                oci_close($conn);
                 
                 header('Location: create.ksiazki.php');
                 exit();
-            }
-        } catch (PDOException $e) {
-            echo "Wystąpił błąd przy dodawaniu do bazy danych: " . $e->getMessage();
-        } finally {
-            if ($conn) {
-                $conn = null;
+            } catch (PDOException $e) {
+                echo "Wystąpił błąd przy dodawaniu do bazy danych: " . $e->getMessage();
+            } finally {
+                if ($conn) {
+                    oci_close($conn);
+                }
             }
         }
+        
     }
 
     public function index()

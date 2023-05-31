@@ -39,7 +39,7 @@ include('../shared/navbar.php');
     use controllers\KsiazkiController;
 
     $ksiazkiController = new KsiazkiController();
-    $autor = 'autor';
+    $autor = 'autorzy';
     $ksiazkiController->show($autor);
 
 ?>

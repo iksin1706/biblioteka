@@ -21,6 +21,9 @@
               <li class="nav-item">
                 <a class="nav-link <?php echo ($currentPage === 'bibliotekarz') ? 'active' : ''; ?>" href="../bibliotekarz/bibliotekarz.php">Bibliotekarz</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link <?php echo ($currentPage === 'statystyki') ? 'active' : ''; ?>" href="../statystyki/statystyki.php">Statystyki</a>
+              </li>
             </ul>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

@@ -13,7 +13,7 @@ use controllers\KsiazkiController;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $wydawnictwo = $_POST['wydawnictwo'];
-    $wydawnictwo2 = 'wydawnictwo';
+    $wydawnictwo2 = 'wydawnictwa';
     $ksiazkiController = new KsiazkiController();
     $ksiazkiController->create_select($wydawnictwo,$wydawnictwo, $wydawnictwo2);
 }

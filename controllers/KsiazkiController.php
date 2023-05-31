@@ -3,28 +3,28 @@
 namespace controllers;
 
 require "connect.php";
+
 use \PDO;
 use \PDOException;
 
 class Ksiazka
 {
-    public $ksiazka_fillable = ['id_książka','id_autor','id_gatunek','id_wydawnictwo','tytuł','rok'];
-
+    public $ksiazka_fillable = ['id_ksiazka', 'autor', 'gatunek', 'wydawnictwo', 'tytul', 'rok'];
 }
 
 class Gatunek
 {
-    public $gatunek_fillable = ['id_gatunek','gatunek'];
+    public $gatunek_fillable = ['id_gatunek', 'gatunek'];
 }
 
 class Wydawnictwo
 {
-    public $wydawnictwo_fillable = ['id_wydawnictwo','wydawnictwo'];
+    public $wydawnictwo_fillable = ['id_wydawnictwo', 'wydawnictwo'];
 }
 
 class Autor
 {
-    public $autor_fillable = ['id_autor','imię','nazwisko'];
+    public $autor_fillable = ['id_autor', 'imie', 'nazwisko'];
 }
 
 class KsiazkiController
@@ -35,65 +35,60 @@ class KsiazkiController
         $conn = getConnection();
 
         if ($conn) {
-            $sql = "SELECT * FROM ".$option;
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $resultSet = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sql = "SELECT * FROM " . $option;
+            $stmt = oci_parse($conn, $sql);
+            oci_execute($stmt);
+
+            $resultSet = array();
+            while ($row = oci_fetch_assoc($stmt)) {
+                $resultSet[] = $row;
+            }
 
             if (count($resultSet) === 0) {
                 echo "Brak danych do wyświetlenia.";
             } else {
-                
-                if ($option == 'książka')
-                {
+                if ($option == 'dostepne_ksiazki') {
                     $ksiazka = new Ksiazka();
-               foreach ($resultSet as $row) {
-                    echo "<tr>";
-                    foreach($ksiazka->ksiazka_fillable as $column)
-                    {
-                        echo "<td>" . $row[$column] . "</td>";
+                    foreach ($resultSet as $row) {
+                        echo "<tr>";
+                        foreach ($ksiazka->ksiazka_fillable as $column) {
+                            echo "<td>" . $row[strtoupper($column)] . "</td>";
+                        }
+                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
+                        echo "</tr>";
                     }
-                    echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
-                    echo "</tr>";
-                }
                 }
 
-                if ($option == 'wydawnictwo')
-                {
+                if ($option == 'wydawnictwa') {
                     $wydawnictwo = new Wydawnictwo();
                     foreach ($resultSet as $row) {
                         echo "<tr>";
-                        foreach($wydawnictwo->wydawnictwo_fillable as $column)
-                        {
-                            echo "<td>" . $row[$column] . "</td>";
+                        foreach ($wydawnictwo->wydawnictwo_fillable as $column) {
+                            echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
                         echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }
 
-                if($option == 'gatunek')
-                {
+                if ($option == 'gatunki') {
                     $gatunek = new Gatunek();
                     foreach ($resultSet as $row) {
                         echo "<tr>";
-                        foreach($gatunek->gatunek_fillable as $column)
-                        {
-                            echo "<td>" . $row[$column] . "</td>";
+                        foreach ($gatunek->gatunek_fillable as $column) {
+                            echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
                         echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }
 
-                if($option == 'autor')
-                {
+                if ($option == 'autorzy') {
                     $autor = new Autor();
                     foreach ($resultSet as $row) {
                         echo "<tr>";
-                        foreach($autor->autor_fillable as $column)
-                        {
-                            echo "<td>" . $row[$column] . "</td>";
+                        foreach ($autor->autor_fillable as $column) {
+                            echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
                         echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
@@ -101,69 +96,67 @@ class KsiazkiController
                 }
             }
 
-            $conn = null; 
+            oci_free_statement($stmt);
+            oci_close($conn);
+        }
     }
-}
 
     public function show_select($option)
     {
         $conn = getConnection();
 
         if ($conn) {
-            
-            if($option == 'autor')
-            {
-                $sql = "SELECT imię, nazwisko FROM ".$option." ORDER BY imię";
+            if ($option == 'autorzy') {
+                $sql = "SELECT imię, nazwisko FROM " . $option . " ORDER BY imię";
+            } else {
+                $sql = "SELECT " . $option . " FROM " . $option . " ORDER BY " . $option;
             }
-            else
-            {
-                $sql = "SELECT ".$option." FROM ".$option." ORDER BY ".$option;
+        
+            $stmt = oci_parse($conn, $sql);
+            oci_execute($stmt);
+        
+            $resultSet = array();
+            while ($row = oci_fetch_assoc($stmt)) {
+                $resultSet[] = $row;
             }
-            
-            
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $resultSet = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        
             if (count($resultSet) === 0) {
                 echo "Brak danych do wyświetlenia.";
             } else {
-               
                 foreach ($resultSet as $row) {
-                    if($option == 'autor')
-                    {
-                        echo "<option>" . $row['imię'] ." ";
-                        echo $row['nazwisko'] . "</option>";    
+                    if ($option == 'autor') {
+                        echo "<option>" . $row['IMIĘ'] . " " . $row['NAZWISKO'] . "</option>";
+                    } else {
+                        echo "<option>" . $row[strtoupper($option)] . "</option>";
                     }
-                    else
-                    {
-                        echo "<option>" . $row[$option] . "</option>";      
-                    }
-                                   
                 }
             }
-
-            $conn = null; 
-
+        
+            oci_free_statement($stmt);
+            oci_close($conn);
         }
+        
     }
 
 
-    public function create_select($option,$option1, $option2)
+    public function create_select($option, $option1, $option2)
     {
         try {
             $conn = getConnection();
             if ($conn) {
                 if ($option2 === 'autor') {
-                    $sql = "INSERT INTO autor(imię, nazwisko) VALUES (?, ?)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([$option, $option1]);
+                    $sql = "INSERT INTO autor(imię, nazwisko) VALUES (:imie, :nazwisko)";
+                    $stmt = oci_parse($conn, $sql);
+                    oci_bind_by_name($stmt, ':imie', $option);
+                    oci_bind_by_name($stmt, ':nazwisko', $option1);
+                    oci_execute($stmt);
                 } else {
-                    $sql = "INSERT INTO $option2($option2) VALUES (?)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([$option]);
+                    $sql = "INSERT INTO $option2($option2) VALUES (:optionValue)";
+                    $stmt = oci_parse($conn, $sql);
+                    oci_bind_by_name($stmt, ':optionValue', $option);
+                    oci_execute($stmt);
                 }
-                
+        
                 header('Location: create.ksiazki.php');
                 exit();
             }
@@ -171,43 +164,37 @@ class KsiazkiController
             echo "Wystąpił błąd przy dodawaniu do bazy danych: " . $e->getMessage();
         } finally {
             if ($conn) {
-                $conn = null;
+                oci_close($conn);
             }
         }
     }
 
     public function index()
     {
-
     }
 
     public function create()
     {
 
         $conn = getConnection();
-
     }
 
     public function store()
     {
-
     }
 
 
     public function edit()
     {
-
     }
 
 
     public function update()
     {
-
     }
 
 
     public function destroy()
     {
- 
     }
 }

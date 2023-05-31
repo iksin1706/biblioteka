@@ -41,7 +41,7 @@ include('../shared/navbar.php');
     use controllers\KsiazkiController;
 
     $ksiazkiController = new KsiazkiController();
-    $ksiazka = 'książka';
+    $ksiazka = 'dostepne_ksiazki';
     $ksiazkiController->show($ksiazka);
 
 ?>

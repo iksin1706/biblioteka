@@ -24,6 +24,7 @@ include('../shared/navbar.php');
         <th class='rounded-start'>ID Czytelnika</th>
             <th>Imię</th>
             <th>Nazwisko </th>
+            <th>Email </th>
             <th>Pesel</th>
             <th>Nr. telefonu </th>
             <th class='rounded-end'> </th>
@@ -38,7 +39,7 @@ include('../shared/navbar.php');
     use controllers\CzytelnicyController;
 
     $czytelnicyController = new CzytelnicyController();
-    $czytelnicy = 'czytelnik';
+    $czytelnicy = 'czytelnicy';
     $czytelnicyController->show($czytelnicy);
 
 ?>
