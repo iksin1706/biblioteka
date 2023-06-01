@@ -55,7 +55,6 @@ class KsiazkiController
                         foreach ($ksiazka->ksiazka_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }
@@ -67,7 +66,6 @@ class KsiazkiController
                         foreach ($wydawnictwo->wydawnictwo_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }
@@ -79,7 +77,6 @@ class KsiazkiController
                         foreach ($gatunek->gatunek_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }
@@ -91,7 +88,6 @@ class KsiazkiController
                         foreach ($autor->autor_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }

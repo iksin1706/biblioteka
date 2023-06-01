@@ -22,22 +22,18 @@ if (isset($_POST['gatunek'])) {
         die("Błąd połączenia z bazą danych: " . $error['message']);
     }
 
-    $query = "BEGIN
-                INSERT INTO gatunki (gatunek)
-                VALUES (:nazwa);
-              END;";
+    $query = "BEGIN dodaj_gatunek(:gatunek); END;";
     $stmt = oci_parse($conn, $query);
 
-    oci_bind_by_name($stmt, ':nazwa', $gatunek);
+    oci_bind_by_name($stmt, ':gatunek', $gatunek);
 
-    $result = oci_execute($stmt);
-
-    if ($result) {
-        oci_commit($conn);
+    try {
+        $result = oci_execute($stmt);
+        if($result)
         echo "Gatunek został dodany.";
-    } else {
+    } catch (Exception $e) {
         $error = oci_error($stmt);
-        echo "Błąd dodawania gatunku: " . $error['message'];
+        echo "Nie udało się dodać gatunku przez bład lub gatunek już istnieje";
     }
 
     oci_free_statement($stmt);

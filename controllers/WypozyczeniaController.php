@@ -15,12 +15,15 @@ class Wypozyczenia
 class WypozyczeniaController
 {
 
-    public function show($option)
+    public function show($option,$czytelnik)
     {
         $conn = getConnection();
 
         if ($conn) {
-            $sql = "SELECT * FROM " . $option.' ORDER BY data_wypozyczenia DESC';
+            if($czytelnik!='')
+            $sql = "SELECT * FROM " . $option." WHERE czytelnik='".$czytelnik."' ORDER BY data_wypozyczenia DESC";
+            else 
+            $sql = "SELECT * FROM " . $option." ORDER BY data_wypozyczenia DESC";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
         

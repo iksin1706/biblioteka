@@ -28,8 +28,7 @@ include('../shared/navbar.php');
             <th>Gatunek </th>
             <th>Wydawnictwo</th>
             <th>Tytuł </th>
-            <th>Rok</th>
-            <th class='rounded-end'></th>
+            <th class='rounded-end'>Rok</th>
         </tr>
     </thead>
     <tbody>

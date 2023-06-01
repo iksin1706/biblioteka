@@ -25,8 +25,7 @@ include('../shared/navbar.php');
         <thead class='bg-dark text-light rounded-1'>
         <tr>
         <th class='rounded-start'>ID wydawnictwa</th>
-            <th>Nazwa wydawnictwa</th>
-            <th class='rounded-end'></th>
+            <th class='rounded-end'>Nazwa wydawnictwa</th>
         </tr>
     </thead>
     <tbody>

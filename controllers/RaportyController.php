@@ -39,7 +39,6 @@ class RaportyController
                         foreach ($raport->bibliotekarz_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }

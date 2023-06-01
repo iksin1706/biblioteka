@@ -57,10 +57,10 @@ include('../shared/header.php');
         <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='wypozyczenia.php'">Wszystkie wypożyczenia</button>
         <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
         <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='opoznione-wypozyczenia.php'">Opoznione wypożyczenia</button><br>
-        <form class="d-flex m-2" role="search" method="GET">
-            <input class="form-control me-2" name="czytelnik" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <form class="d-flex" role="search">
+              <input class="form-control me-2" name="czytelnik" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Szukaj</button>
+            </form>
         <table class="table table-striped table-hover mt-sm-1 ">
             <thead class='bg-dark text-light rounded-1'>
                 <tr>
@@ -81,13 +81,14 @@ include('../shared/header.php');
                 require "../../controllers/WypozyczeniaController.php";
 
                 use controllers\WypozyczeniaController;
+                
 
                 $czytelnik = '';
-                if (isset($_GET['czytelnik'])) $czytelnik = $_GET['czytelnik'];
+                if(isset($_GET['czytelnik']))$czytelnik=$_GET['czytelnik'];
 
                 $wypozyczeniaController = new WypozyczeniaController();
                 $wypozyczenia = 'wypozyczenia_widok';
-                $wypozyczeniaController->show($wypozyczenia, $czytelnik);
+                $wypozyczeniaController->show($wypozyczenia,$czytelnik);
 
                 ?>
 

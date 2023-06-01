@@ -26,8 +26,7 @@ include('../shared/navbar.php');
         <tr>
         <th class='rounded-start'>ID Autora</th>
             <th>Imię</th>
-            <th>Nazwisko</th>
-            <th class='rounded-end'></th>
+            <th class='rounded-end'>Nazwisko</th>
         </tr>
     </thead>
     <tbody>

@@ -22,11 +22,11 @@ include('../shared/navbar.php');
         <thead class='bg-dark text-light rounded-1'>
         <tr>
         <th class='rounded-start'>ID bibliotekarz</th>
+            <th>Identyfikator </th>
             <th>Imię</th>
             <th>Nazwisko </th>
             <th>Pesel</th>
-            <th>Nr. telefonu </th>
-            <th class='rounded-end'> </th>
+            <th class='rounded-end'>Nr. telefonu </th>
         </tr>
     </thead>
     <tbody>

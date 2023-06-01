@@ -9,7 +9,7 @@ use \PDOException;
 
 class Bibliotekarz
 {
-    public $bibliotekarz_fillable = ['id_bibliotekarz','imie','nazwisko','pesel','nr_telefonu'];
+    public $bibliotekarz_fillable = ['id_bibliotekarz','identyfikator','imie','nazwisko','pesel','nr_telefonu'];
 }
 
 class BibliotekarzController
@@ -39,7 +39,6 @@ class BibliotekarzController
                         foreach ($bibliotekarz->bibliotekarz_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
                 }

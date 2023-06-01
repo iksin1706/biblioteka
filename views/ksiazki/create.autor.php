@@ -23,21 +23,19 @@ if (isset($_POST['imie'])) {
         die("Błąd połączenia z bazą danych: " . $error['message']);
     }
 
-    $query = "BEGIN INSERT INTO autorzy(imie,nazwisko) 
-              VALUES(:imie,:nazwisko); END;";
+    $query = "BEGIN dodaj_autora(:imie, :nazwisko); END;";
     $stmt = oci_parse($conn, $query);
 
     oci_bind_by_name($stmt, ':imie', $imie);
     oci_bind_by_name($stmt, ':nazwisko', $nazwisko);
 
-    $result = oci_execute($stmt);
-
-    if ($result) {
-        oci_commit($conn);
-        echo "Wydawnictwo zostało dodane.";
-    } else {
+    try {
+        $result = oci_execute($stmt);
+        if($result)
+        echo "Autor został dodany.";
+    } catch (Exception $e) {
         $error = oci_error($stmt);
-        echo "Błąd dodawania wydawnictwa: " . $error['message'];
+        echo "Nie udało się dodać autora przez bład lub autor już istnieje";
     }
 
     oci_free_statement($stmt);
