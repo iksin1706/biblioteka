@@ -35,11 +35,12 @@ class CzytelnicyController
                 if ($option == 'czytelnicy') {
                     $czytelnik = new Czytelnicy();
                     foreach ($resultSet as $row) {
+                        $id = $row['ID_CZYTELNIK'];
                         echo "<tr>";
                         foreach ($czytelnik->czytelnicy_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
+                        echo '<td><a href="edit.czytelnicy.php?id='.$id.'" type="button" class="btn btn-primary">EDYTUJ</a></td>';
                         echo "</tr>";
                     }
                 }
