@@ -38,18 +38,54 @@ include('../shared/header.php');
 
     if ($result) {
       oci_commit($conn);
-      echo "Wydawnictwo zostało dodane.";
+      echo "Raport został wygenerowany";
     } else {
       $error = oci_error($stmt);
-      echo "Błąd dodawania wydawnictwa: " . $error['message'];
+      echo "Błąd dodawania raportu: " . $error['message'];
     }
 
     // Zamykanie połączenia i zwalnianie zasobów
     oci_free_statement($stmt);
     oci_close($conn);
 
-    echo "Raport został wygenerowany";
+
   }
+  ?>
+
+  <?php 
+    if(isset($_GET['delete'])){
+      $id = $_GET['delete'];
+  
+      if(!isset($conn))
+      include('../../controllers/connect.php');
+  
+      $conn = getConnection();
+  
+  
+      // Przygotuj zapytanie do wywołania procedury
+      $query = "DELETE FROM raporty WHERE raport_id = :id";
+  
+      // Parsowanie zapytania
+      $stmt = oci_parse($conn, $query);
+  
+      // Przypisanie wartości do parametrów
+      oci_bind_by_name($stmt, ':id', $id);
+  
+      $result = oci_execute($stmt);
+  
+      if ($result) {
+        oci_commit($conn);
+        echo "Raport został usuniety";
+      } else {
+        $error = oci_error($stmt);
+        echo "Błąd usuwania raportu: " . $error['message'];
+      }
+  
+      // Zamykanie połączenia i zwalnianie zasobów
+      oci_free_statement($stmt);
+      oci_close($conn);
+    }
+
   ?>
 
 
@@ -80,7 +116,7 @@ include('../shared/header.php');
           <th>Naj. czytelnik</th>
           <th>Naj. bibliotekarz</th>
 
-          <th class='rounded-end'> </th>
+          <th class='rounded-end'> Usun </th>
         </tr>
       </thead>
       <tbody>

@@ -37,8 +37,10 @@ class RaportyController
                     foreach ($resultSet as $row) {
                         echo "<tr>";
                         foreach ($raport->bibliotekarz_fillable as $column) {
+                            $id = $row['RAPORT_ID'];
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
+                        echo '<td><a href="statystyki.php?delete='.$id.'" type="button" class="btn btn-danger">Usun</a></td>';
                         echo "</tr>";
                     }
                 }
