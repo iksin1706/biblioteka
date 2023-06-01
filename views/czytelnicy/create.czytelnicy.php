@@ -7,17 +7,49 @@
     <div class="container mt-5 mb-5">
 
     <?php
-// create.wydawnictwo.php
-require "../../controllers/KsiazkiController.php";
+
 use controllers\KsiazkiController;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $autor = $_POST['imię'];
+if (isset($_POST['imie'])) {
+
+    $pesel = $_POST['pesel'];
+    $telefon = $_POST['phone'];
+    $email = $_POST['email'];
+    $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
-    $autor2 = 'autor';
-    $ksiazkiController = new KsiazkiController();
-    $ksiazkiController->create_select($autor,$nazwisko,$autor2);
+
+    include('../../controllers/connect.php');
+    $conn = getConnection();
+
+    if (!$conn) {
+        $error = oci_error();
+        die("Błąd połączenia z bazą danych: " . $error['message']);
+    }
+
+    $query = "BEGIN INSERT INTO czytelnicy(imie, nazwisko, email, pesel, nr_telefonu) 
+              VALUES(:imie, :nazwisko, :email, :pesel, :telefon); END;";
+    $stmt = oci_parse($conn, $query);
+
+    oci_bind_by_name($stmt, ':imie', $imie);
+    oci_bind_by_name($stmt, ':nazwisko', $nazwisko);
+    oci_bind_by_name($stmt, ':email', $email);
+    oci_bind_by_name($stmt, ':pesel', $pesel);
+    oci_bind_by_name($stmt, ':telefon', $telefon);
+
+    $result = oci_execute($stmt);
+
+    if ($result) {
+        oci_commit($conn);
+        echo "Czytelnik został dodany.";
+    } else {
+        $error = oci_error($stmt);
+        echo "Błąd dodawania czytelnika: " . $error['message'];
+    }
+
+    oci_free_statement($stmt);
+    oci_close($conn);
 }
+
 
 
 ?>
@@ -29,11 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                
-            <form method="POST" action="create.autor.php" class="needs-validation" novalidate>
+            <form method="POST" class="needs-validation" novalidate>
 
                     <div class="form-group mb-2">
-                        <label for="imię">Imię</label>
-                        <input id="imię" name="imię" type="text" class="form-control">
+                        <label for="imie">Imię</label>
+                        <input id="imie" name="imie" type="text" class="form-control">
                         <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
 
@@ -43,17 +75,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
 
-                    
                     <div class="form-group mb-2">
-                        <label for="nazwisko">Pesel</label>
-                        <input id="nazwisko" name="nazwisko" type="text" class="form-control">
+                        <label for="email">E-mail</label>
+                        <input id="email" name="email" type="e-mail" class="form-control">
                         <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
 
                     
                     <div class="form-group mb-2">
-                        <label for="nazwisko">Nr. telefonu</label>
-                        <input id="nazwisko" name="nazwisko" type="text" class="form-control">
+                        <label for="pesel">Pesel</label>
+                        <input id="pesel" name="pesel" type="number" class="form-control">
+                        <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
+                    </div>
+
+                    
+                    <div class="form-group mb-2">
+                        <label for="phone">Nr. telefonu</label>
+                        <input id="phone" name="phone" type="phone" class="form-control">
                         <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
 

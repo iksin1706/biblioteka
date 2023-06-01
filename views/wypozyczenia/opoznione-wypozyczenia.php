@@ -25,9 +25,9 @@ include('../shared/navbar.php');
         <thead class='bg-dark text-light rounded-1'>
         <tr>
             <th class='rounded-start'>ID wypożyczenia</th>
-            <th>Imie i nazwisko bibliotekarza</th>
-            <th>Imie i nazwisko czytelnika </th>
-            <th>Nazwa książki</th>
+            <th>Bibliotekarz</th>
+            <th>Czytelnik </th>
+            <th>Id_ksiazki</th>
             <th>Data wypożyczenia </th>
             <th >Data oddania </th>
             <th class='rounded-end'> Czy opoznione </th>

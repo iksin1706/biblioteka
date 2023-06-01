@@ -7,16 +7,41 @@
     <div class="container mt-5 mb-5">
 
     <?php
-// create.wydawnictwo.php
-require "../../controllers/KsiazkiController.php";
 use controllers\KsiazkiController;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $autor = $_POST['imię'];
+if (isset($_POST['imie'])) {
+
+    $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
-    $autor2 = 'autor';
-    $ksiazkiController = new KsiazkiController();
-    $ksiazkiController->create_select($autor,$nazwisko,$autor2);
+
+    if(!isset($conn))
+    include('../../controllers/connect.php');
+    $conn = getConnection();
+
+    if (!$conn) {
+        $error = oci_error();
+        die("Błąd połączenia z bazą danych: " . $error['message']);
+    }
+
+    $query = "BEGIN INSERT INTO autorzy(imie,nazwisko) 
+              VALUES(:imie,:nazwisko); END;";
+    $stmt = oci_parse($conn, $query);
+
+    oci_bind_by_name($stmt, ':imie', $imie);
+    oci_bind_by_name($stmt, ':nazwisko', $nazwisko);
+
+    $result = oci_execute($stmt);
+
+    if ($result) {
+        oci_commit($conn);
+        echo "Wydawnictwo zostało dodane.";
+    } else {
+        $error = oci_error($stmt);
+        echo "Błąd dodawania wydawnictwa: " . $error['message'];
+    }
+
+    oci_free_statement($stmt);
+    oci_close($conn);
 }
 
 
@@ -29,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                
-            <form method="POST" action="create.autor.php" class="needs-validation" novalidate>
+            <form method="POST" class="needs-validation" novalidate>
 
                     <div class="form-group mb-2">
-                        <label for="imię">Imię</label>
-                        <input id="imię" name="imię" type="text" class="form-control">
+                        <label for="imie">Imię</label>
+                        <input id="imie" name="imie" type="text" class="form-control">
                         <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
 

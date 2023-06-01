@@ -22,6 +22,7 @@ include('../shared/navbar.php');
         <thead class='bg-dark text-light rounded-1'>
         <tr>
         <th class='rounded-start'>ID Czytelnika</th>
+          <th>Identyfikator</th>
             <th>Imię</th>
             <th>Nazwisko </th>
             <th>Email </th>

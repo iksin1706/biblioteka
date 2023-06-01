@@ -2,13 +2,14 @@
 
 namespace controllers;
 
+if(!isset($conn))
 require "connect.php";
 use \PDO;
 use \PDOException;
 
 class Czytelnicy
 {
-    public $czytelnicy_fillable = ['id_czytelnik','imie','nazwisko','email','pesel','nr_telefonu'];
+    public $czytelnicy_fillable = ['id_czytelnik','identyfikator','imie','nazwisko','email','pesel','nr_telefonu'];
 }
 
 class CzytelnicyController

@@ -5,64 +5,94 @@ $pageTitle = 'wypożyczenia';
 include('../shared/header.php');
 ?>
 
-  <body>
+<body>
 
-<?php
-$currentPage = 'wypozyczenia';
-include('../shared/navbar.php');
-?>
-
-
-<div class="container ">
-    <h2 class='title mx-1'> Wypożyczenia </h2>
-<<<<<<< HEAD
-
-    <button type="button" class="btn btn-right btn-dark m-1 mb-1 mx-1" onclick="window.location.href='create.wypozyczenia.php'">Wypożycz książke</button><br>
-    <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='wypozyczenia.php'">Wszystkie wypożyczenia</button>
-    <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
-    <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='opoznione-wypozyczenia.php'">Opoznione wypożyczenia</button>
-=======
-   
-    <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='create.wypozyczenia.php'">Dodaj wypożyczenie</button>
-    <button type="button" class="btn btn-right btn-dark mx-1" onclick="window.location.href='oddajksiazki.php'">Oddaj książkę</button>
-    <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='dostepneksiazki.php'">Dostępne książki</button>
-    
-
->>>>>>> d2a51a6e526a120910a182115a081f12c3ad05fa
-
-    <table class="table table-striped table-hover mt-sm-1 ">
-        <thead class='bg-dark text-light rounded-1'>
-        <tr>
-            <th class='rounded-start'>ID wypożyczenia</th>
-            <th>Imie i nazwisko bibliotekarza</th>
-            <th>Imie i nazwisko czytelnika </th>
-            <th>Nazwa książki</th>
-            <th>Data wypożyczenia </th>
-            <th >Data oddania </th>
-            <th class='rounded-end'> Czy opoznione </th>
-        </tr>
-    </thead>
-    <tbody>
+    <?php
+    $currentPage = 'wypozyczenia';
+    include('../shared/navbar.php');
+    ?>
 
     <?php
 
-    require "../../controllers/WypozyczeniaController.php";
+    if (isset($_GET['zwrot'])) {
+        $id = $_GET['zwrot'];
 
-    use controllers\WypozyczeniaController;
+        require('../../controllers/connect.php');
 
-    $wypozyczeniaController = new WypozyczeniaController();
-    $wypozyczenia = 'wypozyczenia';
-    $wypozyczeniaController->show($wypozyczenia);
+        $conn = getConnection();
 
-?>
+        if (!$conn) {
+            $error = oci_error();
+            die("Błąd połączenia z bazą danych: " . $error['message']);
+        }
 
-    </tbody>
-  </table>
-</div>
+        // Przygotowanie i wykonanie zapytania do procedury
+        $query = "BEGIN oddaj_ksiazke(:id_wypozyczenia); END;";
+        $stmt = oci_parse($conn, $query);
 
-<?php
-include('../shared/footer.php');
-?>
- 
+        oci_bind_by_name($stmt, ':id_wypozyczenia', $id);
+
+        oci_execute($stmt);
+        oci_commit($conn);
+
+        // Sprawdzenie czy oddanie książki zostało wykonane
+        if (oci_num_rows($stmt) > 0) {
+            echo 'Książka została pomyślnie oddana.';
+        } else {
+            echo 'Błąd: Brak wypożyczenia o podanym ID.';
+        }
+
+        oci_free_statement($stmt);
+        oci_close($conn);
+    }
+
+    ?>
+
+
+
+    <div class="container ">
+        <h2 class='title mx-1'> Wypożyczenia </h2>
+
+        <button type="button" class="btn btn-right btn-dark m-1 mb-1 mx-1" onclick="window.location.href='create.wypozyczenia.php'">Wypożycz książke</button><br>
+        <button type="button" class="btn btn-right btn-dark ml-1 mx-1" onclick="window.location.href='wypozyczenia.php'">Wszystkie wypożyczenia</button>
+        <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
+        <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='opoznione-wypozyczenia.php'">Opoznione wypożyczenia</button>
+        <?php echo $_SESSION['identyfikator'] ?>
+        <table class="table table-striped table-hover mt-sm-1 ">
+            <thead class='bg-dark text-light rounded-1'>
+                <tr>
+                    <th class='rounded-start'>ID wypożyczenia</th>
+                    <th>Bibliotekarz</th>
+                    <th>Czytelnik </th>
+                    <th>Id_ksiazki</th>
+                    <th>Data wypożyczena </th>
+                    <th>Data oddania </th>
+                    <th> Czy opoznione </th>
+                    <th class='rounded-end'> Przyjmij zwrot </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php
+
+                require "../../controllers/WypozyczeniaController.php";
+
+                use controllers\WypozyczeniaController;
+
+                $wypozyczeniaController = new WypozyczeniaController();
+                $wypozyczenia = 'wypozyczenia_widok';
+                $wypozyczeniaController->show($wypozyczenia);
+
+                ?>
+
+            </tbody>
+        </table>
+    </div>
+
+    <?php
+    include('../shared/footer.php');
+    ?>
+
 </body>
+
 </html>

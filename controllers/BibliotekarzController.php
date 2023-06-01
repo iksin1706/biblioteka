@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+if(!isset($conn))
 require "connect.php";
 use \PDO;
 use \PDOException;

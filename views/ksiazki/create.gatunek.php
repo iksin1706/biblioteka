@@ -8,15 +8,42 @@
 
     <?php
 
-require "../../controllers/KsiazkiController.php";
 use controllers\KsiazkiController;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['gatunek'])) {
     $gatunek = $_POST['gatunek'];
-    $gatunek2 = 'gatunek';
-    $ksiazkiController = new KsiazkiController();
-    $ksiazkiController->create_select($gatunek,$gatunek, $gatunek2);
+
+    if (!isset($conn))
+        include('../../controllers/connect.php');
+    $conn = getConnection();
+
+    if (!$conn) {
+        $error = oci_error();
+        die("Błąd połączenia z bazą danych: " . $error['message']);
+    }
+
+    $query = "BEGIN
+                INSERT INTO gatunki (gatunek)
+                VALUES (:nazwa);
+              END;";
+    $stmt = oci_parse($conn, $query);
+
+    oci_bind_by_name($stmt, ':nazwa', $gatunek);
+
+    $result = oci_execute($stmt);
+
+    if ($result) {
+        oci_commit($conn);
+        echo "Gatunek został dodany.";
+    } else {
+        $error = oci_error($stmt);
+        echo "Błąd dodawania gatunku: " . $error['message'];
+    }
+
+    oci_free_statement($stmt);
+    oci_close($conn);
 }
+
 
 
 ?>

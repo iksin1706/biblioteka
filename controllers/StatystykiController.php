@@ -7,12 +7,12 @@ require "connect.php";
 use \PDO;
 use \PDOException;
 
-class Wypozyczenia
+class Raport
 {
-    public $wypozyczenia_fillable = ['id_wypozyczenie', 'bibliotekarz', 'czytelnik', 'id_ksiazka', 'data_wypozyczenia', 'data_zwrotu','czy_opoznione'];
+    public $bibliotekarz_fillable = ['raport_id','data_od','data_do','liczba_wypozyczen','liczba_zwrotow','najpopularniejsza_ksiazka','najpopularniejszy_czytelnik','najpopularniejszy_bibliotekarz'];
 }
 
-class WypozyczeniaController
+class RaportController
 {
 
     public function show($option)
@@ -20,7 +20,7 @@ class WypozyczeniaController
         $conn = getConnection();
 
         if ($conn) {
-            $sql = "SELECT * FROM " . $option.' ORDER BY data_wypozyczenia DESC';
+            $sql = "SELECT * FROM " . $option;
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
         
@@ -32,52 +32,55 @@ class WypozyczeniaController
             if (count($resultSet) === 0) {
                 echo "Brak danych do wyświetlenia.";
             } else {
-                    $wypozyczenia = new Wypozyczenia();
+                if ($option == 'raporty') {
+                    $bibliotekarz = new Bibliotekarz();
                     foreach ($resultSet as $row) {
-                        $id = $row['ID_WYPOZYCZENIE'];;
                         echo "<tr>";
-                        foreach ($wypozyczenia->wypozyczenia_fillable as $column) {
+                        foreach ($bibliotekarz->bibliotekarz_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
-                        if(!$row['DATA_ZWROTU'])
-                        echo '<td><a href="wypozyczenia.php?zwrot='.$id.'" type="button" class="btn btn-primary">Przyjmij zwrot</a></td>';
-                        else echo '<td></td>';
+                        echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
                         echo "</tr>";
                     }
+                }
             }
         
             oci_free_statement($stmt);
             oci_close($conn);
         }
         
-    }
+}
 
     public function create_select($option,$option1, $option2)
     {
-        try {
-            $conn = getConnection();
-            if ($conn) {
+        $conn = getConnection();
+
+        if ($conn) {
+            try {
                 if ($option2 === 'autor') {
                     $sql = "INSERT INTO autor(imię, nazwisko) VALUES (:imie, :nazwisko)";
                     $stmt = oci_parse($conn, $sql);
                     oci_bind_by_name($stmt, ':imie', $option);
                     oci_bind_by_name($stmt, ':nazwisko', $option1);
-                    oci_execute($stmt);
                 } else {
                     $sql = "INSERT INTO $option2($option2) VALUES (:optionValue)";
                     $stmt = oci_parse($conn, $sql);
                     oci_bind_by_name($stmt, ':optionValue', $option);
-                    oci_execute($stmt);
                 }
         
+                oci_execute($stmt);
+                
+                oci_free_statement($stmt);
+                oci_close($conn);
+                
                 header('Location: create.ksiazki.php');
                 exit();
-            }
-        } catch (PDOException $e) {
-            echo "Wystąpił błąd przy dodawaniu do bazy danych: " . $e->getMessage();
-        } finally {
-            if ($conn) {
-                oci_close($conn);
+            } catch (PDOException $e) {
+                echo "Wystąpił błąd przy dodawaniu do bazy danych: " . $e->getMessage();
+            } finally {
+                if ($conn) {
+                    oci_close($conn);
+                }
             }
         }
         

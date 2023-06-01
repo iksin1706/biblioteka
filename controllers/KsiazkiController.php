@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+if(!isset($conn))
 require "connect.php";
 
 use \PDO;
@@ -107,9 +108,11 @@ class KsiazkiController
 
         if ($conn) {
             if ($option == 'autorzy') {
-                $sql = "SELECT imię, nazwisko FROM " . $option . " ORDER BY imię";
-            } else {
-                $sql = "SELECT " . $option . " FROM " . $option . " ORDER BY " . $option;
+                $sql = "SELECT * FROM " . $option . " ORDER BY imie";
+            } else if ($option == 'wydawnictwa') {
+                $sql = "SELECT * FROM " . $option . " ORDER BY wydawnictwo ";
+            } else if ($option == 'gatunki') {
+                $sql = "SELECT * FROM " . $option . " ORDER BY gatunek" ;
             }
         
             $stmt = oci_parse($conn, $sql);
@@ -124,10 +127,12 @@ class KsiazkiController
                 echo "Brak danych do wyświetlenia.";
             } else {
                 foreach ($resultSet as $row) {
-                    if ($option == 'autor') {
-                        echo "<option>" . $row['IMIĘ'] . " " . $row['NAZWISKO'] . "</option>";
-                    } else {
-                        echo "<option>" . $row[strtoupper($option)] . "</option>";
+                    if ($option == 'autorzy') {
+                        echo "<option value='".$row['ID_AUTOR']."'>" . $row['IMIE'] . " " . $row['NAZWISKO'] . "</option>";
+                    } else if ($option == 'wydawnictwa') {
+                        echo "<option value='".$row['ID_WYDAWNICTWO']."'>" . $row['WYDAWNICTWO'] . "</option>";
+                    } else if ($option == 'gatunki') {
+                        echo "<option value='".$row['ID_GATUNEK']."'>" . $row['GATUNEK'] . "</option>";
                     }
                 }
             }
