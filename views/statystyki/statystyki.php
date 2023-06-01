@@ -49,13 +49,13 @@ include('../shared/navbar.php');
 
     <?php
 
-    require "../../controllers/WypozyczeniaController.php";
+    require "../../controllers/RaportyController.php";
 
-    use controllers\WypozyczeniaController;
+use controllers\RaportyController;
 
-    $wypozyczeniaController = new WypozyczeniaController();
-    $wypozyczenia = 'wypożyczenie';
-    $wypozyczeniaController->show($wypozyczenia);
+    $raportController = new RaportyController();
+    $raporty = 'raporty';
+    $raportController->show($raporty);
 
 ?>
 

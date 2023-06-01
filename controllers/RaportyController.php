@@ -12,7 +12,7 @@ class Raport
     public $bibliotekarz_fillable = ['raport_id','data_od','data_do','liczba_wypozyczen','liczba_zwrotow','najpopularniejsza_ksiazka','najpopularniejszy_czytelnik','najpopularniejszy_bibliotekarz'];
 }
 
-class RaportController
+class RaportyController
 {
 
     public function show($option)
@@ -33,10 +33,10 @@ class RaportController
                 echo "Brak danych do wyświetlenia.";
             } else {
                 if ($option == 'raporty') {
-                    $bibliotekarz = new Bibliotekarz();
+                    $raport = new Raport();
                     foreach ($resultSet as $row) {
                         echo "<tr>";
-                        foreach ($bibliotekarz->bibliotekarz_fillable as $column) {
+                        foreach ($raport->bibliotekarz_fillable as $column) {
                             echo "<td>" . $row[strtoupper($column)] . "</td>";
                         }
                         echo '<td><center><button type="button" class="btn btn-outline-dark">Edytuj</button></center></td>';
