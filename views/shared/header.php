@@ -1,4 +1,6 @@
-<?php session_start() ?>
+<?php session_start();
+ini_set('display_errors', 0);
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">

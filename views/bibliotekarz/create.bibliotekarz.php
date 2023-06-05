@@ -36,14 +36,11 @@ include('../shared/header.php') ?>
             oci_bind_by_name($stmt, ':pesel', $pesel);
             oci_bind_by_name($stmt, ':telefon', $telefon);
 
-            $result = oci_execute($stmt);
-
-            if ($result) {
-                oci_commit($conn);
-                echo "Bibliotekarz został dodany.";
+            if (oci_execute($stmt)) {
+                echo '<script> alert("Bibliotekarz zostal dodany")</script>';
             } else {
                 $error = oci_error($stmt);
-                echo "Błąd dodawania bibliotekarza: " . $error['message'];
+                echo '<script> alert("Nie udalo sie dodac bibliotekarza")</script>';
             }
 
             oci_free_statement($stmt);

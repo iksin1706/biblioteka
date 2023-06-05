@@ -20,6 +20,7 @@ include('../shared/header.php');
         require('../../controllers/connect.php');
 
         $conn = getConnection();
+        $bibliotekarz = $_SESSION['identyfikator'];
 
         if (!$conn) {
             $error = oci_error();
@@ -27,19 +28,18 @@ include('../shared/header.php');
         }
 
         // Przygotowanie i wykonanie zapytania do procedury
-        $query = "BEGIN oddaj_ksiazke(:id_wypozyczenia); END;";
+        $query = "BEGIN oddaj_ksiazke(:id_wypozyczenia,:bibliotekarz); END;";
         $stmt = oci_parse($conn, $query);
 
         oci_bind_by_name($stmt, ':id_wypozyczenia', $id);
+        oci_bind_by_name($stmt, ':bibliotekarz', $bibliotekarz);
 
-        oci_execute($stmt);
-        oci_commit($conn);
 
-        // Sprawdzenie czy oddanie książki zostało wykonane
-        if (oci_num_rows($stmt) > 0) {
-            echo 'Książka została pomyślnie oddana.';
+        if (oci_execute($stmt)) {
+            echo '<script> alert("Zwrot zostal przyjety")</script>';
         } else {
-            echo 'Błąd: Brak wypożyczenia o podanym ID.';
+            $error = oci_error($stmt);
+            echo '<script> alert("Nie udalo sie przyjac zwrotu ksiazki")</script>';
         }
 
         oci_free_statement($stmt);
@@ -65,7 +65,8 @@ include('../shared/header.php');
             <thead class='bg-dark text-light rounded-1'>
                 <tr>
                     <th class='rounded-start'>ID wypożyczenia</th>
-                    <th>Bibliotekarz</th>
+                    <th>Wypozyczyl</th>
+                    <th>Przyjal zwrot</th>
                     <th>Czytelnik </th>
                     <th>Id_ksiazki</th>
                     <th>Data wypożyczena </th>

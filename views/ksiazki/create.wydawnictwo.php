@@ -29,14 +29,12 @@ include('../shared/header.php') ?>
             $stmt = oci_parse($conn, $query);
 
             oci_bind_by_name($stmt, ':wydawnictwo', $wydawnictwo);
-            try {
-                if (oci_execute($stmt)) {
-                    echo "Wydawnictwo zostało dodane.";
-                }
-            } catch (Exception $e) {
+
+            if (oci_execute($stmt)) {
+                echo '<script> alert("Wydawnictwo zostalo dodane")</script>';
+            } else {
                 $error = oci_error($stmt);
-                $errorMessage = "Nie udało się dodać wydawnictwa z powodu błędu lub istnieje już wydawnictwo o takiej nazwie";
-                echo $errorMessage;
+                echo '<script> alert("Nie udalo sie dodac wydawnictwa. Mozliwe ze istnieje juz wydawnictwo o takiej nazwie")</script>';
             }
             
 
@@ -58,7 +56,7 @@ include('../shared/header.php') ?>
 
                     <div class="form-group mb-2">
                         <label for="wydawnictwo">Wydawnictwo</label>
-                        <input id="wydawnictwo" name="wydawnictwo" type="text" class="form-control">
+                        <input id="wydawnictwo" name="wydawnictwo" type="text" class="form-control" required>
                         <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
 

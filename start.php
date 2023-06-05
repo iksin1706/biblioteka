@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
       echo "<script>window.location='views/wypozyczenia/wypozyczenia.php' </script>";
     } else $error = "Niepoprawny identyfikator";
   } else {
-    echo 'Bibliotekarz nie istnieje.';
+    echo '<script> alert("Niepoprawny identyfikator")</script>';
   }
 
   oci_free_statement($stmt);

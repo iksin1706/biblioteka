@@ -9,7 +9,7 @@ use \PDOException;
 
 class Wypozyczenia
 {
-    public $wypozyczenia_fillable = ['id_wypozyczenie', 'bibliotekarz', 'czytelnik', 'id_ksiazka', 'data_wypozyczenia', 'data_zwrotu','czy_opoznione'];
+    public $wypozyczenia_fillable = ['id_wypozyczenie', 'bibliotekarz','bibliotekarz_zwrot', 'czytelnik', 'id_ksiazka', 'data_wypozyczenia', 'data_zwrotu','czy_opoznione'];
 }
 
 class WypozyczeniaController

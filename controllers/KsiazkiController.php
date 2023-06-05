@@ -10,7 +10,7 @@ use \PDOException;
 
 class Ksiazka
 {
-    public $ksiazka_fillable = ['id_ksiazka', 'autor', 'gatunek', 'wydawnictwo', 'tytul', 'rok'];
+    public $ksiazka_fillable = ['id_ksiazka', 'autor', 'gatunek', 'wydawnictwo', 'tytul', 'rok','dostepna'];
 }
 
 class Gatunek
@@ -48,7 +48,7 @@ class KsiazkiController
             if (count($resultSet) === 0) {
                 echo "Brak danych do wyświetlenia.";
             } else {
-                if ($option == 'dostepne_ksiazki') {
+                if ($option == 'KSIAZKI_WIDOK') {
                     $ksiazka = new Ksiazka();
                     foreach ($resultSet as $row) {
                         echo "<tr>";

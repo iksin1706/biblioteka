@@ -34,15 +34,12 @@ include('../shared/header.php');
     oci_bind_by_name($stmt, ':data_od', $data_od);
     oci_bind_by_name($stmt, ':data_do', $data_do);
 
-    $result = oci_execute($stmt);
-
-    if ($result) {
-      oci_commit($conn);
-      echo "Raport został wygenerowany";
-    } else {
+    if (oci_execute($stmt)) {
+      echo '<script> alert("Raport zostal wygenerowany")</script>';
+  } else {
       $error = oci_error($stmt);
-      echo "Błąd dodawania raportu: " . $error['message'];
-    }
+      echo '<script> alert("Nie udalo sie wygernerowac raportu")</script>';
+  }
 
     // Zamykanie połączenia i zwalnianie zasobów
     oci_free_statement($stmt);
@@ -73,13 +70,12 @@ include('../shared/header.php');
   
       $result = oci_execute($stmt);
   
-      if ($result) {
-        oci_commit($conn);
-        echo "Raport został usuniety";
-      } else {
+      if (oci_execute($stmt)) {
+        echo '<script> alert("Raport zostal usuniety")</script>';
+    } else {
         $error = oci_error($stmt);
-        echo "Błąd usuwania raportu: " . $error['message'];
-      }
+        echo '<script> alert("Nie udalo sie usunac raportu")</script>';
+    }
   
       // Zamykanie połączenia i zwalnianie zasobów
       oci_free_statement($stmt);

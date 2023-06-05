@@ -36,14 +36,12 @@ include('../shared/header.php') ?>
         oci_bind_by_name($stmt, ':id_wydawnictwo', $id_wydawnictwo);
         oci_bind_by_name($stmt, ':id_gatunek', $id_gatunek);
 
-        $result = oci_execute($stmt);
 
-        if ($result) {
-            oci_commit($conn);
-            echo "Ksiazka została dodany.";
+        if (oci_execute($stmt)) {
+            echo '<script> alert("Ksiazka zostala dodana)</script>';
         } else {
             $error = oci_error($stmt);
-            echo "Błąd dodawania ksiazki: " . $error['message'];
+            echo '<script> alert("Nie udalo sie dodac ksiazki")</script>';
         }
 
         oci_free_statement($stmt);

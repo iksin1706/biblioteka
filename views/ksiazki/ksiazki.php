@@ -28,7 +28,8 @@ include('../shared/navbar.php');
             <th>Gatunek </th>
             <th>Wydawnictwo</th>
             <th>Tytuł </th>
-            <th class='rounded-end'>Rok</th>
+            <th>Rok</th>
+            <th class='rounded-end'>Dostepna</th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +41,7 @@ include('../shared/navbar.php');
     use controllers\KsiazkiController;
 
     $ksiazkiController = new KsiazkiController();
-    $ksiazka = 'dostepne_ksiazki';
+    $ksiazka = 'KSIAZKI_WIDOK';
     $ksiazkiController->show($ksiazka);
 
 ?>

@@ -58,14 +58,14 @@ include('../shared/header.php');
         <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='aktywne-wypozyczenia.php'">Aktywne wypożyczenia</button>
         <button type="button" class="btn btn-right btn-outline-dark mx-1" onclick="window.location.href='opoznione-wypozyczenia.php'">Opoznione wypożyczenia</button><br>
         <form class="d-flex" role="search">
-              <input class="form-control me-2" name="czytelnik" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control me-2" name="czytelnik" type="search" placeholder="Szukaj po czytelniku" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Szukaj</button>
             </form>
         <table class="table table-striped table-hover mt-sm-1 ">
             <thead class='bg-dark text-light rounded-1'>
                 <tr>
                     <th class='rounded-start'>ID wypożyczenia</th>
-                    <th>Bibliotekarz</th>
+                    <th>Wypozyczyl</th>
                     <th>Czytelnik </th>
                     <th>Id_ksiazki</th>
                     <th>Data wypożyczena </th>

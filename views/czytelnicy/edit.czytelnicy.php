@@ -77,14 +77,11 @@ if (isset($_GET['id'])) {
                 oci_bind_by_name($stmt, ':telefon', $telefon);
                 oci_bind_by_name($stmt, ':id', $id_czytelnika);
         
-                $result = oci_execute($stmt);
-        
-                if ($result) {
-                    oci_commit($conn);
-                    echo "Dane czytelnika zostały zaktualizowane.";
+                if (oci_execute($stmt)) {
+                    echo '<script> alert("Czytelnik zostal zaktualizowany pomyślnie")</script>';
                 } else {
                     $error = oci_error($stmt);
-                    echo "Błąd aktualizacji danych czytelnika: " . $error['message'];
+                    echo '<script> alert("Nie udalo sie zaaktualizowac czytelnika")</script>';
                 }
         
                 oci_free_statement($stmt);
@@ -104,33 +101,33 @@ if (isset($_GET['id'])) {
         
                             <div class="form-group mb-2">
                                 <label for="imie">Imię</label>
-                                <input id="imie" name="imie" type="text" class="form-control" value="<?php echo $imie; ?>">
+                                <input id="imie" name="imie" type="text" class="form-control" required value="<?php echo $imie; ?>">
                                 <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                             </div>
         
                             <div class="form-group mb-2">
                                 <label for="nazwisko">Nazwisko</label>
-                                <input id="nazwisko" name="nazwisko" type="text" class="form-control" value="<?php echo $nazwisko; ?>">
+                                <input id="nazwisko" name="nazwisko" type="text" class="form-control" required value="<?php echo $nazwisko; ?>">
                                 <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                             </div>
         
                             <div class="form-group mb-2">
                                 <label for="email">E-mail</label>
-                                <input id="email" name="email" type="e-mail" class="form-control" value="<?php echo $email; ?>">
+                                <input id="email" name="email" type="e-mail" class="form-control" required value="<?php echo $email; ?>">
                                 <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                             </div>
         
                             
                             <div class="form-group mb-2">
                                 <label for="pesel">Pesel</label>
-                                <input id="pesel" name="pesel" type="number" class="form-control" value="<?php echo $pesel; ?>">
+                                <input id="pesel" name="pesel" type="number" class="form-control" required value="<?php echo $pesel; ?>">
                                 <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                             </div>
         
                             
                             <div class="form-group mb-2">
                                 <label for="phone">Nr. telefonu</label>
-                                <input id="phone" name="phone" type="phone" class="form-control" value="<?php echo $telefon; ?>">
+                                <input id="phone" name="phone" type="phone" class="form-control" required value="<?php echo $telefon; ?>">
                                 <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                             </div>
         

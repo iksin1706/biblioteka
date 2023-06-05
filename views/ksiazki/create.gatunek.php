@@ -27,13 +27,11 @@ if (isset($_POST['gatunek'])) {
 
     oci_bind_by_name($stmt, ':gatunek', $gatunek);
 
-    try {
-        $result = oci_execute($stmt);
-        if($result)
-        echo "Gatunek został dodany.";
-    } catch (Exception $e) {
+    if (oci_execute($stmt)) {
+        echo '<script> alert(Gatunek zostal dodany")</script>';
+    } else {
         $error = oci_error($stmt);
-        echo "Nie udało się dodać gatunku przez bład lub gatunek już istnieje";
+        echo '<script> alert("Nie udalo sie dodac gatunku")</script>';
     }
 
     oci_free_statement($stmt);

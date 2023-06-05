@@ -28,7 +28,8 @@ include('../shared/header.php');
       <thead class='bg-dark text-light rounded-1'>
         <tr>
           <th class='rounded-start'>ID wypożyczenia</th>
-          <th>Bibliotekarz</th>
+          <th>Wypozyczyl</th>
+          <th>Przyjal zwrot</th>
           <th>Czytelnik </th>
           <th>Id_ksiazki</th>
           <th>Data wypożyczenia </th>
